@@ -1,0 +1,63 @@
+.test {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-weight: 700;
+    height: 99.8%;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.box {
+    font-size: 21pt;
+    overflow: hidden;
+    height: 93px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    user-select: none;
+
+    .word {
+        position: relative;
+        margin: 0 5px 2px;
+    }
+
+    .typedWord {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .completed {
+        color: #474747;
+    }
+
+    #caret {
+        position: absolute;
+        z-index: 1;
+        margin-left: -7.29165px;
+        transition: left 0.1 ease;
+        color: #ce9178;
+        &.blink {
+            animation: blink 1.0s infinite 1s;
+        }
+    }
+    
+    @keyframes blink {
+        0%,
+        100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0;
+        }
+    }
+    
+    .correct{
+        color: green;
+    }
+    .incorrect {
+        color: red;
+    }
+}
+
