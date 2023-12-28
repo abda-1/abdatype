@@ -1,21 +1,25 @@
-header,
-footer {
-    margin: 50px 0;
+    
+header {
+    margin: 50px;
     display: flex;
     width: 50%;
     justify-content: space-between;
     align-items: center;
+    position: relative;
     font-size: 12pt;
     font-weight: 700;
     
     .buttons {
         display: flex;
-        flex-direction:column;
+        flex-direction:row;
         align-items: flex-end;
+    }
+
+    .sign {
+        font-size: 24pt;
+        align-self: center;
+        //margin-left: 50%;
     }
 }
 
-.sign {
-    font-size: 24pt;
-    align-self: center;
-}
+

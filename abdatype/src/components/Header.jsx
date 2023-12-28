@@ -4,11 +4,11 @@ import { useAppContext } from '../state/AppContext';
 import "../stylesheets/Header.scss";
 
 const Header = () => {
-    const {theme, setTheme, time} = useAppContext();
+    const {theme, setTheme, time, setTime} = useAppContext();
     const themes = ['default', 'beige', 'dark', 'vscode', 'github'];
 
     return (
-        <header>
+        <header className='top'>
             <a href="." className="sign">
                 abdatype
             </a>

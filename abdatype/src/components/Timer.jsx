@@ -22,7 +22,7 @@ const Timer = () => {
     }, [time, setTime, testStarted]);
 
     return (
-        <div>
+        <div className='timer'>
             <p>{time}</p>
         </div>
     );

@@ -1,9 +1,11 @@
 import React from 'react';
 
+import '../stylesheets/Footer.scss';
+
 const Footer = () => {
     return (
         <footer>
-            <p>created by abdullah tahir</p>
+            created by abdullah tahir
         </footer>
     );
 };
