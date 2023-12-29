@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useAppContext } from '../state/AppContext';
-import wordsList from '../dictionary/words.json';
+import { useAppContext } from '../../state/AppContext';
+import wordsList from '../../dictionary/words.json';
 
-import '../stylesheets/Tester.scss';
+import useTimer from '../../hooks/useTimer';
+
+import "../../stylesheets/tester/Tester.scss";
 
 const Tester = () => {
 
@@ -17,39 +19,23 @@ const Tester = () => {
     const caretRef = useRef(null);
 
     /* function to start the timer */
-    const startTimer = () => {
+    const {resetTimer} = useTimer({time, testStarted, setTime});
 
-        // start the countdown of the timer
-        const interval = setInterval ( () => {
-            setTime((prevTime) => {
-                
-                // stop the timer condition
-                if (prevTime <= 1) {
-                    clearInterval(interval);
-                    return 0;
-                }
-
-                // otherwise just decrement counter
-                return prevTime-1;
-
-            });
-        }, 1000);
-    };
-
-    /** starting the timer based on keypress */
+    /** after key is pressed, test will start ->>> subject to change... */
     const handleKeyPress = (e) => {
         if(!testStarted) {
             setTestStarted(true);
-            startTimer();
         }
     }
 
     /** resetting the test */
     useEffect(() => {
         if (time === 0) {
-            setCurrentWordIndex(0)
+            setCurrentWordIndex(0);
             setTypedWord('');
             setTypedHistory([]);
+            /** randomise words */
+            wordsList.sort(() => (Math.random() - 0.5));
         }
     }, [time]);
 
@@ -101,6 +87,7 @@ const Tester = () => {
 
     return (
         <div className="test" onClick={handleContainerClick}>
+            <div className='timer'>{time}</div>
             <div className="box">
                 {wordsList.map((word, idx) => (
                     <div

@@ -1,11 +1,13 @@
 import React from 'react';
-import { useAppContext } from '../state/AppContext';
+import { useAppContext } from '../../state/AppContext';
 
-import "../stylesheets/Header.scss";
+import "../../stylesheets/common/Header.scss";
 
 const Header = () => {
     const {theme, setTheme, time, setTime} = useAppContext();
-    const themes = ['default', 'beige', 'dark', 'vscode', 'github'];
+    const themes = ['default', 'sunset', 'night', 'vscode', 'monokai'];
+    const gameTypes = ['words', 'cpp', 'algorithms', 'python', 'javascript'];
+
 
     return (
         <header className='top'>

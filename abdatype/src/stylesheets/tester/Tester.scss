@@ -18,7 +18,10 @@
         clip: rect(0,0,0,0);
         overflow: hidden;
     }
+
 }
+
+
 
 .box {
     font-size: 21pt;
@@ -73,5 +76,11 @@
         color: red;
     }
 
+}
+
+.timer {
+    font-size: 21pt;
+    margin: 5px;
+    color:#ce9178;
 }
 
