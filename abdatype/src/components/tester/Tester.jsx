@@ -10,13 +10,15 @@ import "../../stylesheets/tester/Tester.scss";
 const Tester = () => {
 
     // Variables take from global state
-    const {time, setTime, testStarted, setTestStarted, initialTime, setInitialTime, testCompleted, setTestCompleted} = useAppContext();
+    const {time, setTime, testStarted, setTestStarted, initialTime, testCompleted, setTestCompleted} = useAppContext();
     
     // Internval state variables
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
     const [typedWord, setTypedWord] = useState('');
     const [typedHistory, setTypedHistory] = useState([]);
     const hiddenInputRef = useRef(null);
+    const caretRef = useRef(null);
+    const boxRef = useRef(null);
     const {resetTimer} = useTimer({initialTime, testStarted, setTime});
 
     // Calculate total number of 'correct' characters
@@ -25,7 +27,7 @@ const Tester = () => {
     }, 0)
 
     // Calculate typing speed in WPM
-    const wordsTyped = totalCorrect / 5;
+    const wordsTyped = totalCorrect / 4.5;
     const timeTaken = time > 0 ? (initialTime-time) / 60 : (initialTime / 60);
     const typingSpeed = Math.round(wordsTyped / timeTaken);
 
@@ -34,13 +36,27 @@ const Tester = () => {
         hiddenInputRef.current?.focus();
     }, []);
 
+    // Logic for making the test window scroll automatically based upon caret location based on viewport
+    useEffect(() => {
+        if (caretRef.current && boxRef.current) {
+            const caretRect = caretRef.current.getBoundingClientRect();
+            const boxRect = boxRef.current.getBoundingClientRect();
+        
+            // Scroll when caret moves 2/3 through box
+            if (caretRect.bottom > boxRect.top + (boxRect.height * 2 / 3) || caretRect.top < boxRect.top) {
+                caretRef.current.scrollIntoView({behavior: 'smooth', block: 'center'});
+            }
+        }
+    }, [currentWordIndex, typedWord]);
+
+
     // Reset test once timer reaches 0
     useEffect(() => {
         if (time === 0) {
             setTestCompleted(true);
             hiddenInputRef.current.blur();
         }
-    }, [time]);
+    }, [time, setTestCompleted]);
 
     // Reset test function
     const resetTest = () => {
@@ -59,7 +75,7 @@ const Tester = () => {
         wordsList.sort(() => (Math.random() - 0.5));
     }
 
-    // After any key is pressed, test will start ->>> subject to change... ------------------------------------> subject to change
+    // After any key is pressed, test will start
     const handleKeyPress = (e) => {
         if (!testStarted) setTestStarted(true);
     }
@@ -113,7 +129,7 @@ const Tester = () => {
             {!testCompleted ?
             (<>
                 <div className='timer'>{time}</div>
-                <div className="box">
+                <div className="box" ref={boxRef}>
                     {wordsList.map((word, index) => (
                         <WordDisplay
                             key={word+index}
@@ -122,6 +138,7 @@ const Tester = () => {
                             currentWordIndex={currentWordIndex}
                             typedWord={typedWord}
                             getCharClass={getCharClass}
+                            caretRef={index===currentWordIndex ? caretRef : null}
                         />
                     ))}
                 </div>
