@@ -15,7 +15,7 @@ export const AppProvider = ({children}) => {
     const [initialTime, setInitialTime] = useState(10);
 
     const themeSelection = ['default', 'sunset', 'night'];
-    const wordListSelection = ['words', 'cpp'];
+    const wordListSelection = ['words', 'cpp', 'javascript', 'python'];
     const timeSelection = [10, 15, 30, 60];
 
     return (

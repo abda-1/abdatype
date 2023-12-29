@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAppContext } from '../../state/AppContext';
-import wordsList from '../../dictionary/words.json';
+import WordDisplay from './WordDisplay';
 
 import useTimer from '../../hooks/useTimer';
-import WordDisplay from './WordDisplay';
+import getWordList from '../../hooks/wordListHelper';
 
 import "../../stylesheets/tester/Tester.scss";
 
 const Tester = () => {
 
     // Variables take from global state
-    const {time, setTime, testStarted, setTestStarted, initialTime, testCompleted, setTestCompleted} = useAppContext();
+    const {wordList, time, setTime, testStarted, setTestStarted, initialTime, testCompleted, setTestCompleted} = useAppContext();
     
     // Internval state variables
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -20,10 +20,11 @@ const Tester = () => {
     const caretRef = useRef(null);
     const boxRef = useRef(null);
     const {resetTimer} = useTimer({initialTime, testStarted, setTime});
-
+    const selectedWordList = getWordList(wordList);
+    
     // Calculate total number of 'correct' characters
     const totalCorrect = typedHistory.reduce((total, word, index) => {
-        return total + word.split('').filter((char, charIndex) => char === wordsList[index][charIndex]).length;
+        return total + word.split('').filter((char, charIndex) => char === selectedWordList[index][charIndex]).length;
     }, 0)
 
     // Calculate typing speed in WPM
@@ -72,7 +73,7 @@ const Tester = () => {
 
     // Shuffle words
     const shuffleWords = () => {
-        wordsList.sort(() => (Math.random() - 0.5));
+        selectedWordList.sort(() => (Math.random() - 0.5));
     }
 
     // After any key is pressed, test will start
@@ -130,7 +131,7 @@ const Tester = () => {
             (<>
                 <div className='timer'>{time}</div>
                 <div className="box" ref={boxRef}>
-                    {wordsList.map((word, index) => (
+                    {selectedWordList.map((word, index) => (
                         <WordDisplay
                             key={word+index}
                             word={word}
