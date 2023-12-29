@@ -19,8 +19,15 @@
         overflow: hidden;
     }
 
-}
+    .timer {
+        font-size: 21pt;
+        margin: 5px;
+        color:#ce9178;
+    }
 
+
+
+}
 
 
 .box {
@@ -38,49 +45,37 @@
         line-height: 32px;
     }
 
-    .typedWord {
-        position: absolute;
-        top: 0;
-        left: 0;
+    .untyped {
+        color: #474747; // untyped colour
     }
 
-    .completed {
-        color: #474747;
+    .correct {
+        color: #d4d4d4; // font colour
     }
 
-    #caret {
+    .incorrect {
+        color: #c72c41; // remain the same ? 
+    }    
+
+
+    .caret {
         position: absolute;
         z-index: 1;
         margin-left: -7.29165px;
         transition: left 0.1 ease;
-        color: #ce9178;
+        color: #ce9178; // h1 colour 
+
         &.blink {
             animation: blink 1.0s infinite 1s;
         }
     }
     
     @keyframes blink {
-        0%,
-        100% {
-            opacity: 1;
-        }
-        50% {
-            opacity: 0;
-        }
-    }
-    
-    .correct{
-        color: green;
-    }
-    .incorrect {
-        color: red;
+        0%, 100% { opacity: 1;}
+        50% { opacity: 0; }
     }
 
 }
 
-.timer {
-    font-size: 21pt;
-    margin: 5px;
-    color:#ce9178;
-}
+
 

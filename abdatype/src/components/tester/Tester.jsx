@@ -3,121 +3,124 @@ import { useAppContext } from '../../state/AppContext';
 import wordsList from '../../dictionary/words.json';
 
 import useTimer from '../../hooks/useTimer';
+import WordDisplay from './WordDisplay';
 
 import "../../stylesheets/tester/Tester.scss";
 
 const Tester = () => {
 
-    /** state variables */
+    // Variables take from state
     const {time, setTime, testStarted, setTestStarted} = useAppContext();
-
-    /** initialise states */
+    
+    // Internval tester variables
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
     const [typedWord, setTypedWord] = useState('');
     const [typedHistory, setTypedHistory] = useState([]);
-    const activeWordRef = useRef(null);
-    const caretRef = useRef(null);
-
-    /* function to start the timer */
+    const hiddenInputRef = useRef(null);
     const {resetTimer} = useTimer({time, testStarted, setTime});
 
-    /** after key is pressed, test will start ->>> subject to change... */
-    const handleKeyPress = (e) => {
-        if(!testStarted) {
-            setTestStarted(true);
-        }
-    }
+    // Logic for making input come into focus
+    useEffect(() => {
+        hiddenInputRef.current?.focus();
+    }, []);
 
-    /** resetting the test */
+    // Reset test once timer reaches 0
     useEffect(() => {
         if (time === 0) {
-            setCurrentWordIndex(0);
-            setTypedWord('');
-            setTypedHistory([]);
-            /** randomise words */
-            wordsList.sort(() => (Math.random() - 0.5));
+            //resetTest();
         }
     }, [time]);
 
+    // Reset test function
+    const resetTest = () => {
+        setCurrentWordIndex(0);
+        setTypedWord('');
+        setTypedHistory([]);
+        shuffleWords();
+    }
 
-    /** handling skipping of words */
+    // Shuffle words
+    const shuffleWords = () => {
+        wordsList.sort(() => (Math.random() - 0.5));
+    }
+
+    // After any key is pressed, test will start ->>> subject to change...
+    const handleKeyPress = (e) => {
+        if (!testStarted) setTestStarted(true);
+    }
+
+    // Handle keyboard input during test
     const handleChange = (e) => {
         const newTypedWord = e.target.value;
         setTypedWord(newTypedWord);
 
-        if (newTypedWord.endsWith(' ') || newTypedWord.endsWith('\n')) {
-            setTypedHistory([...typedHistory, newTypedWord.trim()]);
-            setCurrentWordIndex(currentWordIndex + 1); // (currentWordIndex) => currentWordIndex+1?
-            setTypedWord('');
+        if (shouldSkipWord(newTypedWord)){
+            updateWordIndex();
         }
+    }
 
-    };
+    // Check if word is skipped / completed
+    const shouldSkipWord = (word) => {
+        return word.endsWith(' ') || word.endsWith('\n');
+    }
 
-    const hiddenInputRef = useRef(null);
+    // Update the index of the new word and reset inputs
+    const updateWordIndex = () => {
+        setTypedHistory(prevHistory => [...prevHistory, typedWord]);
+        setCurrentWordIndex(prevIndex => prevIndex + 1);
+        setTypedWord('');
+    }
 
-    /** handle making input hidden logic */
-    useEffect(() => {
-        if(hiddenInputRef.current) {
-            hiddenInputRef.current.focus();
-        }
-    }, []);
-
-    /** ensure all keystrokes are directed towards input */
-    const handleContainerClick = () => {
-        if (hiddenInputRef.current) {
-            hiddenInputRef.current.focus();
-        }
-    };
-
-    const isActive = currentWordIndex < wordsList.length;
-
-    /** identify class of word being typed */
-    const getCharClass = (char, charId, typedWord, wordIndex) => {
+    // Obtain 'type' / class of character being input
+    const getCharClass = (char, charIndex, wordIndex) => {
         
+        // Already completed words
         if (wordIndex < currentWordIndex) {
-            return 'completed';
+            const typedWordForThisIndex = typedHistory[wordIndex];
+            return typedWordForThisIndex[charIndex] === char ? 'correct' : 'incorrect';
         }
-        
-        if(wordIndex > currentWordIndex || charId >= typedWord.length) {
+
+        // Current word being typed
+        if (wordIndex === currentWordIndex) {
+            if (charIndex < typedWord.length) {
+                return typedWord[charIndex] === char ? 'correct' : 'incorrect';
+            }
             return 'untyped';
         }
 
-        return typedWord[charId] === char ? 'correct' : 'incorrect';
-    };
+        // Words that have not yet been reached
+        return 'untyped';
+
+    }
 
     return (
-        <div className="test" onClick={handleContainerClick}>
+        <div className="test" onClick={(useEff) => hiddenInputRef.current?.focus()}>
             <div className='timer'>{time}</div>
             <div className="box">
-                {wordsList.map((word, idx) => (
-                    <div
-                        key={word + idx}
-                        className={`word ${idx === currentWordIndex ? 'active' : ''}`}
-                        ref={idx === currentWordIndex ? activeWordRef : null}>
-                        {word.split("").map((char, charId) => (
-                            <span key={char + charId} className={getCharClass(char, charId, typedWord, idx)}>
-                                {char}
-                            </span>
-                        ))}
-                        {isActive && idx === currentWordIndex ? (
-                            <span ref={caretRef} id="caret" className="blink" style={{left: typedWord.length * 14.5833}}>|</span>
-                        ) : null}
-                    </div>
+                {wordsList.map((word, index) => (
+                    <WordDisplay
+                        key={word+index}
+                        word={word}
+                        index={index}
+                        currentWordIndex={currentWordIndex}
+                        typedWord={typedWord}
+                        getCharClass={getCharClass}
+                    />
                 ))}
             </div>
+            
             <input 
                 ref={hiddenInputRef} 
                 type="text" 
                 value={typedWord} 
                 onChange={handleChange}
                 className='hidden-input'
-                onKeyDown={handleKeyPress} 
+                onKeyDown={handleKeyPress}
             />
+
         </div>
     );
 
 };
-
-
 
 export default Tester;
