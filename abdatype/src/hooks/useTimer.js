@@ -1,13 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-/** use timer hook will manage timer's countdown + handle start/reset */
-const useTimer = ({initialTime, testStarted, setTime}) => {
+// Hook to manage timer usage
+const useTimer = ({initialTime, setInitialTime, testStarted, setTime}) => {
 
-    /** timer logic */
     useEffect(() => {
         let interval;
 
-        /** test started condition */
+        // During test decrement time
         if (testStarted) {
             interval = setInterval(() => {
                 setTime(prevTime => {
@@ -25,7 +24,7 @@ const useTimer = ({initialTime, testStarted, setTime}) => {
 
     }, [testStarted, setTime]);
 
-    /** reset timer */
+    // Reset time
     const resetTimer = () => {
         setTime(initialTime);
     }

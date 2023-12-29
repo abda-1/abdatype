@@ -4,8 +4,6 @@ import Footer from './components/common/Footer';
 import Tester from './components/tester/Tester';
 
 function App() {
-  //const {theme} = useAppContext();
-  
   return (
     <AppProvider>
       <Header/>

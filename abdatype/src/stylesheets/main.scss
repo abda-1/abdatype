@@ -42,6 +42,11 @@ button {
     padding: 5px;
     margin: 0;
 
+    &.selected {
+      color:#ce9178;
+      text-decoration:underline;
+    }
+
   }
 
   &:hover {

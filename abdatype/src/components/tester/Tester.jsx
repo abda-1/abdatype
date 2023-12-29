@@ -9,15 +9,25 @@ import "../../stylesheets/tester/Tester.scss";
 
 const Tester = () => {
 
-    // Variables take from state
-    const {time, setTime, testStarted, setTestStarted} = useAppContext();
+    // Variables take from global state
+    const {time, setTime, testStarted, setTestStarted, initialTime, setInitialTime, testCompleted, setTestCompleted} = useAppContext();
     
-    // Internval tester variables
+    // Internval state variables
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
     const [typedWord, setTypedWord] = useState('');
     const [typedHistory, setTypedHistory] = useState([]);
     const hiddenInputRef = useRef(null);
-    const {resetTimer} = useTimer({time, testStarted, setTime});
+    const {resetTimer} = useTimer({initialTime, testStarted, setTime});
+
+    // Calculate total number of 'correct' characters
+    const totalCorrect = typedHistory.reduce((total, word, index) => {
+        return total + word.split('').filter((char, charIndex) => char === wordsList[index][charIndex]).length;
+    }, 0)
+
+    // Calculate typing speed in WPM
+    const wordsTyped = totalCorrect / 5;
+    const timeTaken = time > 0 ? (initialTime-time) / 60 : (initialTime / 60);
+    const typingSpeed = Math.round(wordsTyped / timeTaken);
 
     // Logic for making input come into focus
     useEffect(() => {
@@ -27,7 +37,8 @@ const Tester = () => {
     // Reset test once timer reaches 0
     useEffect(() => {
         if (time === 0) {
-            //resetTest();
+            setTestCompleted(true);
+            hiddenInputRef.current.blur();
         }
     }, [time]);
 
@@ -37,6 +48,10 @@ const Tester = () => {
         setTypedWord('');
         setTypedHistory([]);
         shuffleWords();
+        resetTimer();
+        setTestStarted(false);
+        setTestCompleted(false);
+        setTime(initialTime);
     }
 
     // Shuffle words
@@ -44,7 +59,7 @@ const Tester = () => {
         wordsList.sort(() => (Math.random() - 0.5));
     }
 
-    // After any key is pressed, test will start ->>> subject to change...
+    // After any key is pressed, test will start ->>> subject to change... ------------------------------------> subject to change
     const handleKeyPress = (e) => {
         if (!testStarted) setTestStarted(true);
     }
@@ -94,30 +109,39 @@ const Tester = () => {
     }
 
     return (
-        <div className="test" onClick={(useEff) => hiddenInputRef.current?.focus()}>
-            <div className='timer'>{time}</div>
-            <div className="box">
-                {wordsList.map((word, index) => (
-                    <WordDisplay
-                        key={word+index}
-                        word={word}
-                        index={index}
-                        currentWordIndex={currentWordIndex}
-                        typedWord={typedWord}
-                        getCharClass={getCharClass}
-                    />
-                ))}
-            </div>
-            
-            <input 
-                ref={hiddenInputRef} 
-                type="text" 
-                value={typedWord} 
-                onChange={handleChange}
-                className='hidden-input'
-                onKeyDown={handleKeyPress}
-            />
-
+        <div className="test" onClick={() => hiddenInputRef.current?.focus()}>
+            {!testCompleted ?
+            (<>
+                <div className='timer'>{time}</div>
+                <div className="box">
+                    {wordsList.map((word, index) => (
+                        <WordDisplay
+                            key={word+index}
+                            word={word}
+                            index={index}
+                            currentWordIndex={currentWordIndex}
+                            typedWord={typedWord}
+                            getCharClass={getCharClass}
+                        />
+                    ))}
+                </div>
+                
+                <input 
+                    ref={hiddenInputRef} 
+                    type="text" 
+                    value={typedWord} 
+                    onChange={handleChange}
+                    className='hidden-input'
+                    onKeyDown={handleKeyPress}
+                />
+            </>)
+            :
+            (<>
+                <div className='result'>
+                    <span>typing speed: {typingSpeed} WPM</span>
+                    <button onClick={resetTest}>RESTART</button>
+                </div>
+            </>)}
         </div>
     );
 

@@ -4,4 +4,16 @@ footer {
     justify-content: center;
     display: flex;
     position: relative;
+
+}
+
+a {    
+    &:hover{
+        color: #d4d4d4; // font colour
+        font-weight: 700;
+    }
+}
+
+.hidden {
+    visibility: none;
 }

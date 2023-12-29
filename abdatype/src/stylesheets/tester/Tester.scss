@@ -22,13 +22,23 @@
     .timer {
         font-size: 21pt;
         margin: 5px;
-        color:#ce9178;
+        color:#ce9178;  // h1 colour
     }
 
-
+    .result {
+        font-size: 32px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    
+        button{
+            margin-top: 5vh;
+            font-size: 22pt;
+        }
+    }
 
 }
-
 
 .box {
     font-size: 21pt;

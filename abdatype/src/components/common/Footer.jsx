@@ -5,7 +5,7 @@ import "../../stylesheets/common/Footer.scss";
 const Footer = () => {
     return (
         <footer>
-            created by abdullah tahir
+            <span>created by <a href='.'>abdullah tahir</a></span>
         </footer>
     );
 };
