@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useAppContext } from '../../state/AppContext';
 import WordDisplay from './WordDisplay';
 
-import useTimer from '../../hooks/useTimer';
-import getWordList from '../../hooks/wordListHelper';
+import useTimer from '../../utils/useTimer';
+import getWordList from '../../utils/wordListHelper';
 
 import "../../stylesheets/tester/Tester.scss";
 
@@ -20,6 +20,8 @@ const Tester = () => {
     const caretRef = useRef(null);
     const boxRef = useRef(null);
     const {resetTimer} = useTimer({initialTime, testStarted, setTime});
+    
+    // Obtain word list through helper function
     const selectedWordList = getWordList(wordList);
     
     // Calculate total number of 'correct' characters
@@ -127,10 +129,9 @@ const Tester = () => {
 
     return (
         <div className="test" onClick={() => hiddenInputRef.current?.focus()}>
-            {!testCompleted ?
-            (<>
-                <div className='timer'>{time}</div>
-                <div className="box" ref={boxRef}>
+            <>
+                <div className='timer' style={{visibility: testCompleted ? 'hidden' : 'visible'}}>{time}</div>
+                <div className="box" style={{visibility: testCompleted ? 'hidden' : 'visible'}} ref={boxRef}>
                     {selectedWordList.map((word, index) => (
                         <WordDisplay
                             key={word+index}
@@ -152,14 +153,13 @@ const Tester = () => {
                     className='hidden-input'
                     onKeyDown={handleKeyPress}
                 />
-            </>)
-            :
-            (<>
-                <div className='result'>
-                    <span>typing speed: {typingSpeed} WPM</span>
+            </>
+            {testCompleted &&
+                (<div className='result'>
+                    <span className='speed'>typing speed: {typingSpeed} WPM</span>
                     <button onClick={resetTest}>RESTART</button>
-                </div>
-            </>)}
+                </div>)
+            }
         </div>
     );
 

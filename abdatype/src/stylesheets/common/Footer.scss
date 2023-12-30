@@ -1,19 +1,15 @@
 footer {
-    margin-bottom: 50px;
-    width: 50%;
+    margin: 100px 0;
+    width: 100%;
+    align-items: center;
     justify-content: center;
     display: flex;
-    position: relative;
 
 }
 
 a {    
     &:hover{
-        color: #d4d4d4; // font colour
+        color: var(--text-color); // font colour
         font-weight: 700;
     }
-}
-
-.hidden {
-    visibility: none;
 }

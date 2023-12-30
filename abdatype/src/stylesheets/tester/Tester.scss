@@ -3,9 +3,7 @@
     flex-direction: column;
     justify-content: center;
     font-weight: 700;
-    height: 99.8%;
-    width: 50%;
-    margin: 0 auto;
+    height: 100%;
 
     .hidden-input {
         position: absolute;
@@ -22,22 +20,8 @@
     .timer {
         font-size: 21pt;
         margin: 5px;
-        color:#ce9178;  // h1 colour
+        color: var(--h1-color);
     }
-
-    .result {
-        font-size: 32px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    
-        button{
-            margin-top: 5vh;
-            font-size: 22pt;
-        }
-    }
-
 }
 
 .box {
@@ -56,15 +40,15 @@
     }
 
     .untyped {
-        color: #474747; // untyped colour
+        color: var(--foreground-color); // untyped colour
     }
 
     .correct {
-        color: #d4d4d4; // font colour
+        color: var(--text-color); // font colour
     }
 
     .incorrect {
-        color: #c72c41; // remain the same ? 
+        color: var(--incorrect); // remain the same ? 
     }    
 
 
@@ -73,7 +57,7 @@
         z-index: 1;
         margin-left: -7.29165px;
         transition: left 0.1 ease;
-        color: #ce9178; // h1 colour 
+        color: var(--h1-color); // h1 colour 
 
         &.blink {
             animation: blink 1.0s infinite 1s;
@@ -87,5 +71,30 @@
 
 }
 
+.result {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    z-index: 10;
+    font-size: 35pt;
+
+    
+    button{
+        margin-top: 40px;
+        font-size: 22pt;
+    }
+}
+
+.box,
+.timer {
+    visibility: visible;
+}
 
 

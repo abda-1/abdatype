@@ -14,7 +14,7 @@ export const AppProvider = ({children}) => {
     const [testCompleted, setTestCompleted] = useState(false);
     const [initialTime, setInitialTime] = useState(10);
 
-    const themeSelection = ['default', 'sunset', 'night'];
+    const themeSelection = ['default', 'light', 'night'];
     const wordListSelection = ['words', 'cpp', 'javascript', 'python'];
     const timeSelection = [10, 15, 30, 60];
 

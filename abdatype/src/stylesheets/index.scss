@@ -1,10 +1,37 @@
 @import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap");
 
-body {
-  margin: 0;
-  font-family: Inconsolata, monospace;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+// Themes
+.default {
+  --background-color: #1e1e1e;
+  --foreground-color: #474747;
+  --text-color: #d4d4d4;
+  --h1-color: #e19c33;
+  --incorrect: #c72c41;
+}
+
+.light {
+  --background-color: #dddddd;
+  --foreground-color: rgb(140, 132, 132);
+  --text-color:  #171717;
+  --h1-color: #1f1d1d;
+  --incorrect: #c72c41;
+}
+
+.night {
+  --background-color: black;
+  --foreground-color: #292f34;
+  --text-color:  lightslategrey;
+  --h1-color: rgb(82, 60, 170);
+  --incorrect: #c72c41;
+}
+
+
+.app {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 50%;
+  height: 100%;
 }
 
 html,
@@ -12,30 +39,47 @@ body {
   height: 100%;
   width: 100%;
   scroll-behavior: smooth;
+  font-family: Inconsolata, monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background-color);
 }
 
-/* main page display */
+html {
+  position: absolute;
+}
+
+body {
+  margin: 0;
+}
+
+// root 
 #root {
   display: flex;
   height: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  color: #d4d4d4 ; /* need to update this! */
-  background-color: #1e1e1e;
+
+  color: var(--text-color) ; /* need to update this! */
+  background-color: var(--background-color);
 }
 
-/* buttons */
+
+
+
+// buttons - restart + selection buttons
 button {
-  background-color: #1e1e1e;
-  color: #d4d4d4;
-  border: 2px solid #d4d4d4;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border: 2px solid var(--text-color);
   padding: 10px;
   font-family: Inconsolata, monospace;
   font-weight: 700;
   margin: 10px;
   cursor: pointer;
 
+  //heading buttons
   &.mini { 
     font-size: 12pt;
     border: none;
@@ -43,37 +87,28 @@ button {
     margin: 0;
 
     &.selected {
-      color:#ce9178;
+      color:var(--h1-color);
       text-decoration:underline;
     }
 
   }
 
   &:hover {
-    color: #ce9178;
-    border-color: #ce9178;
+    color: var(--h1-color);
+    border-color: var(--h1-color);
+    transition: color 0.1s ease;
   }
 
 }
 
-/* links */
+// links
 a {
-  color: #d4d4d4;
+  color: var(--text-color);
   text-decoration: none;
   transition: color 0.1s ease;
 
-  span {
-    font-size: smaller;
-    margin: 2.5px;
-  }
-
   &:hover{
-    color: #ce9178
+    color: var(--h1-color);
   }
 
-}
-
-.hidden {
-  opacity: 0;
-  pointer-events: none;
 }
