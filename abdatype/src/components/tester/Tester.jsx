@@ -3,14 +3,12 @@ import { useAppContext } from '../../state/AppContext';
 import WordDisplay from './WordDisplay';
 
 import useTimer from '../../utils/useTimer';
-import getWordList from '../../utils/wordListHelper';
-
 import "../../stylesheets/tester/Tester.scss";
 
 const Tester = () => {
 
     // Variables take from global state
-    const {wordList, time, setTime, testStarted, setTestStarted, initialTime, testCompleted, setTestCompleted} = useAppContext();
+    const {shuffleWords, wordList, time, setTime, testStarted, setTestStarted, initialTime, testCompleted, setTestCompleted} = useAppContext();
     
     // Internval state variables
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -20,13 +18,10 @@ const Tester = () => {
     const caretRef = useRef(null);
     const boxRef = useRef(null);
     const {resetTimer} = useTimer({initialTime, testStarted, setTime});
-    
-    // Obtain word list through helper function
-    const selectedWordList = getWordList(wordList);
-    
+
     // Calculate total number of 'correct' characters
     const totalCorrect = typedHistory.reduce((total, word, index) => {
-        return total + word.split('').filter((char, charIndex) => char === selectedWordList[index][charIndex]).length;
+        return total + word.split('').filter((char, charIndex) => char === wordList[index][charIndex]).length;
     }, 0)
 
     // Calculate typing speed in WPM
@@ -71,11 +66,6 @@ const Tester = () => {
         setTestStarted(false);
         setTestCompleted(false);
         setTime(initialTime);
-    }
-
-    // Shuffle words
-    const shuffleWords = () => {
-        selectedWordList.sort(() => (Math.random() - 0.5));
     }
 
     // After any key is pressed, test will start
@@ -132,7 +122,7 @@ const Tester = () => {
             <>
                 <div className='timer' style={{visibility: testCompleted ? 'hidden' : 'visible'}}>{time}</div>
                 <div className="box" style={{visibility: testCompleted ? 'hidden' : 'visible'}} ref={boxRef}>
-                    {selectedWordList.map((word, index) => (
+                    {wordList.map((word, index) => (
                         <WordDisplay
                             key={word+index}
                             word={word}

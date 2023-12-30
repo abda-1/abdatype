@@ -1,4 +1,4 @@
-import { AppProvider, useAppContext } from './state/AppContext';
+import { AppProvider } from './state/AppContext';
 
 import MyApp from './MyApp';
 

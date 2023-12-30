@@ -4,7 +4,7 @@ import { useAppContext } from '../../state/AppContext';
 import "../../stylesheets/common/Header.scss";
 
 const Header = () => {
-    const {theme, setTheme, initialTime, setTime, setInitialTime, wordList, setWordList, themeSelection, wordListSelection, timeSelection} = useAppContext();
+    const {theme, setTheme, initialTime, setTime, setInitialTime, wordType, themeSelection, wordTypeSelection, timeSelection, updateWordList} = useAppContext();
 
     return (
         <header>
@@ -23,7 +23,7 @@ const Header = () => {
                 <span className='title'>
                     time:
                     {timeSelection.map((sel) => (
-                        <button key={sel} onClick={() => {setTime(sel); setInitialTime(sel)}} className={`mini ${initialTime === sel ? 'selected' : ''}`}>
+                        <button key={sel} onClick={() => {setTime(sel); setInitialTime(sel);}} className={`mini ${initialTime === sel ? 'selected' : ''}`}>
                             {sel}                    
                         </button>
                     ))}
@@ -31,8 +31,8 @@ const Header = () => {
 
                 <span className='title'>
                     test type:
-                    {wordListSelection.map((sel) => (
-                        <button key={sel} onClick={() => setWordList(sel)} className={`mini ${wordList === sel ? 'selected' : ''}`}>
+                    {wordTypeSelection.map((sel) => (
+                        <button key={sel} onClick={() => {updateWordList(sel);}} className={`mini ${wordType === sel ? 'selected' : ''}`}>
                             {sel}                    
                         </button>
                     ))}
