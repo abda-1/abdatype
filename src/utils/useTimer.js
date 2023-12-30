@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 // Hook to manage timer usage
-const useTimer = ({initialTime, setInitialTime, testStarted, setTime}) => {
+const useTimer = ({initialTime, testStarted, setTime}) => {
 
     useEffect(() => {
         let interval;
