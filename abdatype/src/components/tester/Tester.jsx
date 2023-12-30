@@ -8,7 +8,7 @@ import "../../stylesheets/tester/Tester.scss";
 const Tester = () => {
 
     // Variables take from global state
-    const {shuffleWords, wordList, time, setTime, testStarted, setTestStarted, initialTime, testCompleted, setTestCompleted} = useAppContext();
+    const {wordType, updateWordList, wordList, time, setTime, testStarted, setTestStarted, initialTime, testCompleted, setTestCompleted} = useAppContext();
     
     // Internval state variables
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -61,7 +61,9 @@ const Tester = () => {
         setCurrentWordIndex(0);
         setTypedWord('');
         setTypedHistory([]);
-        shuffleWords();
+
+        updateWordList(wordType);
+        
         resetTimer();
         setTestStarted(false);
         setTestCompleted(false);
