@@ -13,14 +13,16 @@ Developed using React, *abdatype* currently holds the ability to:
 
 
 ## How can you try it?
-Run locally:
-`git clone https://github.com/abda-1/abdatype.git`
-`cd abdatype`
-`npm install`
-`npm start`
-`npm run build`
+See my [portfolio website](https://abda-1.github.io/)
 
-Or see my [portfolio website](https://abda-1.github.io/)
+Or run locally:
+```
+git clone https://github.com/abda-1/abdatype.git
+cd abdatype
+npm install
+npm start
+npm run build
+```
 
 ## What's in store for the future? 
 - **Algorithm Based Typing Tests**
