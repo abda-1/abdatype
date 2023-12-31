@@ -1,52 +1,66 @@
 import React, {useState, createContext, useContext} from 'react';
-import words from '../dictionary/words.json';
-import cpp from '../dictionary/cppwords.json';
-import javascript from '../dictionary/javawords.json';
-import python from '../dictionary/pythonwords.json';
+import englishWords from '../dictionary/englishwords.json';
+import cppWords from '../dictionary/cppwords.json';
+import javascriptWords from '../dictionary/javawords.json';
+import pythonWords from '../dictionary/pythonwords.json';
 
 const AppContext = createContext();
 
-// redefinition for ease of use
+// Redefinition for ease of use
 export const useAppContext = () => useContext(AppContext);
 
-// manage global state variables
+// Manage global state variables
 export const AppProvider = ({children}) => {
     const [theme, setTheme] = useState('default');
     const [time, setTime] = useState(10);
-    const [wordList, setWordList] = useState(words);
+    const [wordList, setWordList] = useState(englishWords);
     const [wordType, setWordType] = useState('words');
     const [testStarted, setTestStarted] = useState(false);
     const [testCompleted, setTestCompleted] = useState(false);
-    const [initialTime, setInitialTime] = useState(10);
+    const [initialTime, setInitialTime] = useState(15);
 
+    // Algorithms selection (i hope what i do from now doesnt break everything pls)
+    const [languageSelected, setLanguageSelected] = useState('english');
+    const [testType, setTestType] = useState('words');
+
+    // Button selections
     const themeSelection = ['default', 'light', 'night'];
-    const wordTypeSelection = ['words', 'cpp', 'javascript', 'python'];
+    const testTypeSelection = ['words', 'algorithms'];
+    const languageSelection = ['english', 'cpp', 'java', 'python'];
     const timeSelection = [10, 15, 30, 60];
 
-    const updateWordList = (newType) => {
-        setWordType(newType);
+    const updateLanguage = (newType) => {
+
         let newList;
+        
         switch (newType) {
-            case 'words':
-                newList = words;
+            case 'english':
+                newList = englishWords;
+                setLanguageSelected(testType === 'words' ? 'english' : 'cpp');
                 break;
             case 'cpp':
-                newList = cpp;
+                newList = cppWords;
+                setLanguageSelected('cpp');
                 break;
-            case 'javascript':
-                newList = javascript;
+            case 'java':
+                newList = javascriptWords;
+                setLanguageSelected('java');
                 break;
             case 'python':
-                newList = python;
+                newList = pythonWords;
+                setLanguageSelected('python');
                 break;
             
             default:
-                newList = words;
+                newList = englishWords;
+                setLanguageSelected('english');
         };
         shuffleWords(newList)
     }
 
-    // Shuffle function -> could be made more efficient
+
+
+    // Shuffle function -> could be made more efficient but scale permits
     const shuffleWords = (newWordList) => {
         const shuffledList = [...newWordList].sort(() => Math.random() - 0.5);
         setWordList(shuffledList);
@@ -54,10 +68,13 @@ export const AppProvider = ({children}) => {
 
     return (
         <AppContext.Provider 
-            value={{themeSelection, wordTypeSelection, timeSelection,
+            value={{themeSelection, timeSelection, languageSelection, testTypeSelection,
+                    shuffleWords,
+                    languageSelected, setLanguageSelected, updateLanguage,
+                    testType, setTestType,
                     theme, setTheme, 
                     time, setTime, 
-                    wordList, updateWordList, 
+                    wordList,
                     wordType, setWordType, 
                     testStarted, setTestStarted,
                     testCompleted, setTestCompleted,
