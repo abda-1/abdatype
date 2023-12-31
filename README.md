@@ -6,7 +6,7 @@
 Developed using React, *abdatype* currently holds the ability to:
 - Scroll through text dynamically as the user completes the test (with the help of our friend the caret '|').
 - Provide immediate feedback based on the accuracy of the user through the highlighting of incorrect and trailing characters.
-- Permit the customisation of test settings such as the theme, test time, and test type.
+- Permit the customisation of test settings such as the theme, test time, and test type (randomised algorithms woo!).
 - Be aesthetically pleasing (UI inspiration was taken from not only [monkeytype.com](https://monkeytype.com/) but also some other amazing typing tests).
 
 
@@ -25,7 +25,7 @@ npm start
 npm run build
 ```
 
-## What's in store for the future? 
-- **Algorithm Based Typing Tests**
-- **C++ Lambda Expression Practice**
+## Some of the things I have in mind for the future
+- **More Algorithms!**
+- **C++ Lambda Expression Practice!**
 - **More themes!**
