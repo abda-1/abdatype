@@ -30,9 +30,15 @@ const Tester = () => {
         
     }, [testType, algorithmList, setWordList]);
 
-    // Format algorithm text
+    // Format algorithm text -> we can separate the indentation from the content
     const formatAlgorithmText = (text) => {
-        return text.split('\n');
+
+        return text.split('\n').map(line => {
+            const indent = line.match(/^\s*/)[0];
+            const content = line.trimStart();
+            return {indent, content};
+        }); 
+
     }
 
 
@@ -111,7 +117,7 @@ const Tester = () => {
 
     // Check if word is skipped / completed
     const shouldSkipWord = (word) => {
-        if (testType === 'algorithms') word.endsWith('\n');  //FIX@#!@#!@#!@#
+        if (testType === 'algorithms') return word.endsWith('\n');  //FIX@#!@#!@#!@#
         return word.endsWith(' ') || word.endsWith('\n');
     }
 
@@ -162,14 +168,30 @@ const Tester = () => {
         />);
     };
 
-
-    const renderAlgorithmLines = () => {
-        return wordList.map((line, lineIndex) => (
-            <div key={`line-${lineIndex}`} className='algorithm-line'>
-                {renderWordDisplay(line, lineIndex)}
-            </div>
-        ));
-    }
+    // Render each line of the algorithm
+    const renderAlgorithmLines = () => {    
+        return wordList.map((line, lineIndex) => {
+            if (!line || typeof line.content !== 'string' || typeof line.indent !== 'string') {
+                return null;
+            }
+    
+            return (
+                <div key={`line-${lineIndex}`} className='algorithm-line'>
+                    <WordDisplay
+                        key={`word-${lineIndex}`}
+                        word={line.content} 
+                        indent={line.indent}
+                        index={lineIndex}
+                        currentWordIndex={currentWordIndex}
+                        typedWord={typedWord}
+                        getCharClass={getCharClass}
+                        caretRef={lineIndex === currentWordIndex ? caretRef : null}
+                    />
+                </div>
+            );
+        });
+    };
+    
     
 
     return (
@@ -198,7 +220,9 @@ const Tester = () => {
             </>
             {testCompleted &&
                 (<div className='result'>
-                    <span className='speed'>typing speed: {typingSpeed} WPM</span>
+                    <span className='speed'>
+                        {`WPM: ${typingSpeed < 10 ? "too fast!" : typingSpeed}`}
+                    </span>
                     <button onClick={resetTest}>RESTART</button>
                 </div>)
             }
