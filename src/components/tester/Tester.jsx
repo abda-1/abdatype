@@ -21,11 +21,11 @@ const Tester = () => {
 
     // Calculate total number of 'correct' characters
     const totalCorrect = typedHistory.reduce((total, word, index) => {
-        return total + word.split('').filter((char, charIndex) => char === wordList[index][charIndex]).length;
+        return total + 1 + word.split('').filter((char, charIndex) => char === wordList[index][charIndex]).length;
     }, 0)
 
     // Calculate typing speed in WPM
-    const wordsTyped = totalCorrect / 4.5;
+    const wordsTyped = totalCorrect / 5;
     const timeTaken = time > 0 ? (initialTime-time) / 60 : (initialTime / 60);
     const typingSpeed = Math.round(wordsTyped / timeTaken);
 
