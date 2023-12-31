@@ -33,5 +33,27 @@
     "try",
     "while",
     "with",
-    "yield"
+    "yield",
+    "abs",
+    "all",
+    "ascii",
+    "bool",
+    "bytes",
+    "callable",
+    "enumerate",
+    "eval",
+    "hash",
+    "len",
+    "map",
+    "min",
+    "max",
+    "pow",
+    "range",
+    "set",
+    "round",
+    "in",
+    "tuple",
+    "super",
+    "slice"
+
 ]

@@ -8,7 +8,7 @@ import "../../stylesheets/tester/Tester.scss";
 const Tester = () => {
 
     // Variables take from global state
-    const {wordList, time, setTime, testStarted, setTestStarted, initialTime, testCompleted, setTestCompleted, shuffleWords} = useAppContext();
+    const {wordList, time, setTime, testStarted, setTestStarted, initialTime, testCompleted, setTestCompleted, shuffleWords, testType, algorithmList, setWordList} = useAppContext();
     
     // Internval state variables
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -18,6 +18,23 @@ const Tester = () => {
     const caretRef = useRef(null);
     const boxRef = useRef(null);
     const {resetTimer} = useTimer({initialTime, testStarted, setTime});
+
+    // Algorithm List (bandaid fix should not be here)
+    useEffect(() => {
+        if (testType === 'algorithms' && algorithmList.length > 0) {
+            const randomAlgorithmString = algorithmList[Math.floor(Math.random() * algorithmList.length)];
+            if (randomAlgorithmString) {
+                setWordList(formatAlgorithmText(randomAlgorithmString));
+            }
+        }
+        
+    }, [testType, algorithmList, setWordList]);
+
+    // Format algorithm text
+    const formatAlgorithmText = (text) => {
+        return text.split('\n');
+    }
+
 
     // Calculate total number of 'correct' characters (including spaces)
     const totalCorrect = typedHistory.reduce((total, word, index) => {
@@ -62,7 +79,7 @@ const Tester = () => {
         setTypedWord('');
         setTypedHistory([]);
 
-        shuffleWords(wordList);
+        if (testType !== 'algorithms') shuffleWords(wordList);
         
         resetTimer();
         setTestStarted(false);
@@ -73,6 +90,13 @@ const Tester = () => {
     // After any key is pressed, test will start
     const handleKeyPress = (e) => {
         if (!testStarted) setTestStarted(true);
+
+        // If enter key is pressed also skip
+        if (e.key === 'Enter') {
+            setTypedHistory(prevHistory => [...prevHistory, typedWord]);
+            setCurrentWordIndex(prevIndex => prevIndex + 1);
+            setTypedWord('');
+        }
     }
 
     // Handle keyboard input during test
@@ -87,6 +111,7 @@ const Tester = () => {
 
     // Check if word is skipped / completed
     const shouldSkipWord = (word) => {
+        if (testType === 'algorithms') word.endsWith('\n');  //FIX@#!@#!@#!@#
         return word.endsWith(' ') || word.endsWith('\n');
     }
 
@@ -111,7 +136,8 @@ const Tester = () => {
             if (charIndex < typedWord.length) {
                 return typedWord[charIndex] === char ? 'correct' : 'incorrect';
             }
-            if (charIndex >= wordList[currentWordIndex].length) {
+    
+            if (testType === 'algorithms' && charIndex >= wordList[currentWordIndex].length) {
                 return 'trailing';
             }
             return 'untyped';
@@ -122,24 +148,45 @@ const Tester = () => {
 
     }
 
+    // Render words
+    const renderWordDisplay = (word,index) => {
+        return (
+        <WordDisplay
+            key={`word-${index}`}
+            word={word}
+            index={index}
+            currentWordIndex={currentWordIndex}
+            typedWord={typedWord}
+            getCharClass={getCharClass}
+            caretRef={index === currentWordIndex ? caretRef : null}
+        />);
+    };
+
+
+    const renderAlgorithmLines = () => {
+        return wordList.map((line, lineIndex) => (
+            <div key={`line-${lineIndex}`} className='algorithm-line'>
+                {renderWordDisplay(line, lineIndex)}
+            </div>
+        ));
+    }
+    
+
     return (
         <div className="test" onClick={() => hiddenInputRef.current?.focus()}>
             <>
                 <div className='timer' style={{visibility: testCompleted ? 'hidden' : 'visible'}}>{time}</div>
-                <div className="box" style={{visibility: testCompleted ? 'hidden' : 'visible'}} ref={boxRef}>
-                    {wordList.map((word, index) => (
-                        <WordDisplay
-                            key={word+index}
-                            word={word}
-                            index={index}
-                            currentWordIndex={currentWordIndex}
-                            typedWord={typedWord}
-                            getCharClass={getCharClass}
-                            caretRef={index===currentWordIndex ? caretRef : null}
-                        />
-                    ))}
+
+                <div
+                    className={testType=== 'algorithms' ? 'algobox' : 'box'} 
+                    style={{visibility: testCompleted ? 'hidden' : 'visible'}} 
+                    ref={boxRef}
+                >
+                    {testType === 'algorithms' ? renderAlgorithmLines() : 
+                        wordList.map((word, index) => renderWordDisplay(word, index))    
+                    }
                 </div>
-                
+
                 <input 
                     ref={hiddenInputRef} 
                     type="text" 

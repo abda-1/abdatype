@@ -6,8 +6,8 @@ import "../../stylesheets/common/Header.scss";
 const Header = () => {
     const { theme, setTheme, 
             initialTime, setTime, setInitialTime, 
-            testType, setTestType, 
-            languageSelected, setLanguageSelected, updateLanguage,
+            testType, 
+            languageSelected, setLanguageSelected, updateLanguageAndTest,
             themeSelection, testTypeSelection, languageSelection, timeSelection } = useAppContext();
     
     // (Bandaid) Fix variable sync issues -> should update when testType, languageType are updated
@@ -57,7 +57,7 @@ const Header = () => {
                     {testTypeSelection.map((sel) => (
                         <button 
                             key={sel} 
-                            onClick={() => {setTestType(sel);}} 
+                            onClick={() => {updateLanguageAndTest(languageSelected, sel);}} 
                             className={`mini ${testType === sel ? 'selected' : ''}`}
                         >
                             {sel}                    
@@ -70,7 +70,7 @@ const Header = () => {
                     {languageSelection.map((sel) => (
                         <button 
                             key={sel} 
-                            onClick={() => {updateLanguage(sel);}} 
+                            onClick={() => {updateLanguageAndTest(sel, testType);}} 
                             disabled={testType === 'algorithms' && sel === 'english'} 
                             className={`mini ${languageSelected === sel ? 'selected' : ''}`}
                         >

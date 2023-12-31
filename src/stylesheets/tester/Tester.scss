@@ -24,6 +24,23 @@
     }
 }
 
+.algobox{
+    font-size: 21pt;
+    height: 250px;
+    display: block;
+    overflow-y: hidden;
+    flex-wrap: wrap;
+    user-select: none;
+    white-space: pre-wrap;
+
+    .algorithm-line{
+        white-space: pre-wrap;
+        margin-bottom: 5px;
+    }
+
+    
+}
+
 .box {
     font-size: 21pt;
     overflow: hidden;
@@ -32,47 +49,48 @@
     flex-wrap: wrap;
     align-items: center;
     user-select: none;
+    white-space: pre-wrap;
 
-    .word {
-        position: relative;
-        margin: 0 5px 2px;
-        line-height: 32px;
+}
+
+.word {
+    position: relative;
+    margin: 0 5px 2px;
+    line-height: 32px;
+}
+
+.untyped {
+    color: var(--foreground-color); // untyped colour
+}
+
+.correct {
+    color: var(--text-color); // font colour
+}
+
+.incorrect {
+    color: var(--incorrect); // remain the same ? 
+}
+
+.trailing {
+    color: var(--trailing);
+}
+
+
+.caret {
+    position: absolute;
+    z-index: 1;
+    margin-left: -7.29165px;
+    transition: left 0.1 ease;
+    color: var(--h1-color); // h1 colour 
+
+    &.blink {
+        animation: blink 1.0s infinite 1s;
     }
+}
 
-    .untyped {
-        color: var(--foreground-color); // untyped colour
-    }
-
-    .correct {
-        color: var(--text-color); // font colour
-    }
-
-    .incorrect {
-        color: var(--incorrect); // remain the same ? 
-    }
-
-    .trailing {
-        color: var(--trailing);
-    }
-
-
-    .caret {
-        position: absolute;
-        z-index: 1;
-        margin-left: -7.29165px;
-        transition: left 0.1 ease;
-        color: var(--h1-color); // h1 colour 
-
-        &.blink {
-            animation: blink 1.0s infinite 1s;
-        }
-    }
-    
-    @keyframes blink {
-        0%, 100% { opacity: 1;}
-        50% { opacity: 0; }
-    }
-
+@keyframes blink {
+    0%, 100% { opacity: 1;}
+    50% { opacity: 0; }
 }
 
 .result {
@@ -100,5 +118,3 @@
 .timer {
     visibility: visible;
 }
-
-

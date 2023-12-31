@@ -1,8 +1,13 @@
 import React, {useState, createContext, useContext} from 'react';
+
 import englishWords from '../dictionary/englishwords.json';
 import cppWords from '../dictionary/cppwords.json';
 import javascriptWords from '../dictionary/javawords.json';
 import pythonWords from '../dictionary/pythonwords.json';
+
+import cppAlgorithms from '../dictionary/cppAlgorithms.json';
+import javaAlgorithms from '../dictionary/javaAlgorithms.json';
+import pythonAlgorithms from '../dictionary/pythonAlgorithms.json';
 
 const AppContext = createContext();
 
@@ -22,40 +27,62 @@ export const AppProvider = ({children}) => {
     // Algorithms selection (i hope what i do from now doesnt break everything pls)
     const [languageSelected, setLanguageSelected] = useState('english');
     const [testType, setTestType] = useState('words');
+    const [algorithmList, setAlgorithmList] = useState([]);
 
     // Button selections
     const themeSelection = ['default', 'light', 'night'];
     const testTypeSelection = ['words', 'algorithms'];
     const languageSelection = ['english', 'cpp', 'java', 'python'];
     const timeSelection = [10, 15, 30, 60];
+   
+    const updateLanguageAndTest = (newLanguage, newTest) => {
 
-    const updateLanguage = (newType) => {
+        setLanguageSelected(newLanguage);
+        setTestType(newTest);
 
-        let newList;
-        
-        switch (newType) {
-            case 'english':
-                newList = englishWords;
-                setLanguageSelected(testType === 'words' ? 'english' : 'cpp');
-                break;
-            case 'cpp':
-                newList = cppWords;
-                setLanguageSelected('cpp');
-                break;
-            case 'java':
-                newList = javascriptWords;
-                setLanguageSelected('java');
-                break;
-            case 'python':
-                newList = pythonWords;
-                setLanguageSelected('python');
-                break;
+        // Updating language and test-type is words
+        if (newTest === 'words') {
+            let newList;
+            switch (newLanguage) {
+                case 'english':
+                    newList = englishWords;
+                    break;
+                case 'cpp':
+                    newList = cppWords;
+                    break;
+                case 'java':
+                    newList = javascriptWords;
+                    break;
+                case 'python':
+                    newList = pythonWords;
+                    break;
+                default:
+                    newList = englishWords;
+            }
             
-            default:
-                newList = englishWords;
-                setLanguageSelected('english');
-        };
-        shuffleWords(newList)
+            shuffleWords(newList);
+        }
+
+        // Updating language and test-type is algorithm
+        else if (newTest === 'algorithms') {
+            switch (newLanguage) {
+                case 'cpp':
+                    setAlgorithmList(cppAlgorithms);
+                    break;
+                case 'java':
+                    setAlgorithmList(javaAlgorithms);
+                    break;
+                case 'python':
+                    setAlgorithmList(pythonAlgorithms);
+                    break;
+                default:
+                    // In the case that english is selected -> maybe could change this to some pseucodode list in the future ?
+                    setAlgorithmList(cppAlgorithms);
+            }
+            setLanguageSelected(newLanguage);
+
+        }
+
     }
 
 
@@ -70,11 +97,12 @@ export const AppProvider = ({children}) => {
         <AppContext.Provider 
             value={{themeSelection, timeSelection, languageSelection, testTypeSelection,
                     shuffleWords,
-                    languageSelected, setLanguageSelected, updateLanguage,
+                    languageSelected, setLanguageSelected, updateLanguageAndTest,
                     testType, setTestType,
+                    algorithmList, setAlgorithmList,
                     theme, setTheme, 
                     time, setTime, 
-                    wordList,
+                    wordList, setWordList,
                     wordType, setWordType, 
                     testStarted, setTestStarted,
                     testCompleted, setTestCompleted,
