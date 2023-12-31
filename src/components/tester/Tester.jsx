@@ -19,7 +19,7 @@ const Tester = () => {
     const boxRef = useRef(null);
     const {resetTimer} = useTimer({initialTime, testStarted, setTime});
 
-    // Calculate total number of 'correct' characters
+    // Calculate total number of 'correct' characters (including spaces)
     const totalCorrect = typedHistory.reduce((total, word, index) => {
         return total + 1 + word.split('').filter((char, charIndex) => char === wordList[index][charIndex]).length;
     }, 0)
