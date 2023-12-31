@@ -10,6 +10,14 @@ const WordDisplay = ({word, index, currentWordIndex, typedWord, getCharClass, ca
                 </span>
             ))}
 
+            {index === currentWordIndex && typedWord.length > word.length &&
+                typedWord.slice(word.length).split("").map((char, charIndex) => (
+                    <span key={char+charIndex} className='trailing'>
+                        {char}
+                    </span>
+                ))
+            }
+
             {index === currentWordIndex && (
                 <span ref={caretRef} className='caret blink' style={{left: typedWord.length * 14.5833}}>|</span>
             )}

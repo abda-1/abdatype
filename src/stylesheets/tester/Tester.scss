@@ -49,7 +49,11 @@
 
     .incorrect {
         color: var(--incorrect); // remain the same ? 
-    }    
+    }
+
+    .trailing {
+        color: var(--trailing);
+    }
 
 
     .caret {

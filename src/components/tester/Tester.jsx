@@ -111,6 +111,9 @@ const Tester = () => {
             if (charIndex < typedWord.length) {
                 return typedWord[charIndex] === char ? 'correct' : 'incorrect';
             }
+            if (charIndex >= wordList[currentWordIndex].length) {
+                return 'trailing';
+            }
             return 'untyped';
         }
 
