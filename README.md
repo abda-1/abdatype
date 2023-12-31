@@ -5,12 +5,12 @@
 
 Developed using React, *abdatype* currently holds the ability to:
 - Scroll through text dynamically as the user completes the test (with the help of our friend the caret '|').
-- Provide immediate feedback based on the accuracy of the user through the highlighting of incorrect characters.
+- Provide immediate feedback based on the accuracy of the user through the highlighting of incorrect and trailing characters.
 - Permit the customisation of test settings such as the theme, test time, and test type.
 - Be aesthetically pleasing (UI inspiration was taken from not only [monkeytype.com](https://monkeytype.com/) but also some other amazing typing tests).
 
 
-![abdatype in action](sampleimage.PNG)
+![abdatype in action](./doc/sampleimage.PNG)
 
 
 ## How can you try it?

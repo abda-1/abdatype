@@ -1,13 +1,13 @@
 import React, {useState, createContext, useContext} from 'react';
 
-import englishWords from '../dictionary/englishwords.json';
-import cppWords from '../dictionary/cppwords.json';
-import javascriptWords from '../dictionary/javawords.json';
-import pythonWords from '../dictionary/pythonwords.json';
+import englishWords from '../dictionary/words/englishwords.json';
+import cppWords from '../dictionary/words/cppwords.json';
+import javascriptWords from '../dictionary/words/javawords.json';
+import pythonWords from '../dictionary/words/pythonwords.json';
 
-import cppAlgorithms from '../dictionary/cppAlgorithms.json';
-import javaAlgorithms from '../dictionary/javaAlgorithms.json';
-import pythonAlgorithms from '../dictionary/pythonAlgorithms.json';
+import cppAlgorithms from '../dictionary/algorithms/cppAlgorithms.json';
+import javaAlgorithms from '../dictionary/algorithms/javaAlgorithms.json';
+import pythonAlgorithms from '../dictionary/algorithms/pythonAlgorithms.json';
 
 const AppContext = createContext();
 
