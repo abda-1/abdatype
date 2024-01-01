@@ -14,7 +14,7 @@ Developed using React, *abdatype* currently holds the ability to:
 
 
 ## How can you try it?
-See my [portfolio website](https://abda-1.github.io/)
+See it [live!](https://abda-1.github.io/abdatype)
 
 Or run locally:
 ```
