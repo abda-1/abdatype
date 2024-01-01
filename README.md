@@ -22,7 +22,6 @@ git clone https://github.com/abda-1/abdatype.git
 cd abdatype
 npm install
 npm start
-npm run build
 ```
 
 ## Some of the things I have in mind for the future
